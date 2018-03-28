@@ -556,7 +556,8 @@ def plot2D(result,par1,par2,
     par1,label1 = _utils.strToDim(str(par1))
     par2,label2 = _utils.strToDim(str(par2))
 
-    assert (par1 != par2), 'par1 and par2 must be different numbers to code for the parameters to plot'
+    if par1 == par2:
+        raise ValueError('par1 and par2 must be different numbers to code for the parameters to plot')
     
     if axisHandle == None:
         axisHandle = plt.gca()

@@ -138,8 +138,10 @@ def checkPriors(data,options):
     
 def testForWarnings(testResult, parameter):
     
-    assert all(np.isfinite(testResult)), "the prior you provided for %s returns non-finite values" %parameter
-    assert all(testResult >= 0), "the prior you provided for %s returns negative values" % parameter
+    if not np.all(np.isfinite(testResult)):
+        raise ValueError("the prior you provided for %s returns non-finite values" %parameter)
+    if not np.all(testResult >= 0):
+        raise ValueError("the prior you provided for %s returns negative values" % parameter)
 
     if any(testResult == 0):
         warnings.warn("the prior you provided for %s returns zeros" % parameter)

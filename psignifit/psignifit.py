@@ -151,7 +151,8 @@ def psignifit(data, optionsIn):
     else:
         raise ValueError('You specified an illegal experiment type')
     
-    assert (max(data[:,0]) - min(data[:,0]) > 0), 'Your data does not have variance on the x-axis! This makes fitting impossible'
+    if np.max(data[:,0]) - np.min(data[:,0]) <= 0:
+        raise ValueError('Your data does not have variance on the x-axis! This makes fitting impossible')
                  
                      
     '''
@@ -163,8 +164,9 @@ def psignifit(data, optionsIn):
     '''
     
     if options['sigmoidName'] in ['Weibull','logn','weibull']:
-            options['logspace'] = 1
-            assert min(data[:,0]) > 0, 'The sigmoid you specified is not defined for negative data points!'
+        options['logspace'] = 1
+        if np.min(data[:,0]) <= 0:
+            raise ValueError('The sigmoid you specified is not defined for negative data points!')
     else:
         options['logspace'] = 0
         
@@ -571,10 +573,12 @@ def getSlopePC(result, pCorrect, unscaled = False):
         PC = 0.5
 
     if unscaled:
-        assert ((pCorrect > 0) and (pCorrect < 1)), 'pCorrect must be in ]0,1[ '
+        if not 0 < pcorrect < 1:
+            raise ValueError('pCorrect must be in [0,1]')
         pCorrectUnscaled = pCorrect
     else:
-        assert ((pCorrect > theta0[3]) and (pCorrect < (1-theta0[2]))), 'pCorrect must lay btw {:.2f} and {:.2f}'.format(theta0[3], (1-theta0[2]))
+        if not theta0[3] < pcorrect < (1-theta0[2]):
+            raise ValueError('pCorrect must lay btw {:.2f} and {:.2f}'.format(theta0[3], (1-theta0[2])))
         pCorrectUnscaled = (pCorrect-theta0[3])/(1-theta0[2] - theta0[3])
         
 
@@ -677,8 +681,8 @@ def getThreshold(result,pCorrect, unscaled=False):
         theta0[3]  = 0
         CIs[2:4,:] = 0
         
-    
-    assert ((np.array(pCorrect)>theta0[3]) and (np.array(pCorrect)<(1-theta0[2]))), 'The threshold percent correct is not reached by the sigmoid!'
+    if not theta0[3] < pCorrect < (1-theta0[2]):
+        raise ValueError('The threshold percent correct is not reached by the sigmoid!')
         
     pCorrectUnscaled = (pCorrect-theta0[3])/(1-theta0[2]-theta0[3])
     alpha = result['options']['widthalpha']
