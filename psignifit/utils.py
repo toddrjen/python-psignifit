@@ -44,7 +44,7 @@ def my_t1icdf(p):
 def my_betapdf(x,a,b):
     ''' this implements the betapdf with less input checks '''
     
-    if type(x) is int or float:
+    if isinstance(x, (int, float)):
         x = array(x)
 
     # Initialize y to zero.
@@ -93,33 +93,8 @@ def fill_kwargs(kw_args, values):
     '''
     
     kw_args.clear()
-    d = len(values)    
-    for i in range(0,d):
-        if i == 0:
-            if type(values[0]) == ndarray:
-                kw_args['alpha'] = values[0]
-            else:
-                kw_args['alpha'] = array([values[0]])
-        if i == 1:
-            if type(values[1]) == ndarray:
-                kw_args['beta'] = values[1]
-            else:
-                kw_args['beta'] = array([values[1]])                
-        if i == 2:
-            if type(values[2]) == ndarray:
-                kw_args['lambda'] = values[2]
-            else:
-                kw_args['lambda'] = array([values[2]])
-        if i == 3:
-            if type(values[3]) == ndarray:
-                kw_args['gamma'] = values[3]
-            else:
-                kw_args['gamma'] = array([values[3]])
-        if i == 4:
-            if type(values[4]) == ndarray:
-                kw_args['varscale'] = values[4]
-            else:
-                kw_args['varscale'] = array([values[4]])
+    keys = ['alpha', 'beta', 'lambda', 'gamma', 'varscale']
+    kwargs = {key: np.asarray(val) for key, val in zip(keys, values)}
         
 def strToDim(string):
     """
