@@ -2,7 +2,7 @@
 import numpy as np
 import scipy.special as sp
 
-def likelihood(data, options, *args):
+def likelihood(data, options, *args, **kwargs):
     """
     Calculates the (normalized) likelihood for the data from given parameters
     function [p,logPmax] = likelihood(typeHandle,data,alpha,beta,lambda,gamma)
@@ -13,7 +13,7 @@ def likelihood(data, options, *args):
 
     """
     
-    p = logLikelihood(data, options, *args)
+    p = logLikelihood(data, options, *args, **kwargs)
         
     '''We never need the actual value of the likelihood. Something proportional
     is enough and this circumvents numerical problems for the likelihood to
@@ -27,7 +27,7 @@ def likelihood(data, options, *args):
     return (p,logPmax)
 
 
-def logLikelihood(data,options, alpha, beta, lambda=0, gamma=0.5, varscale=1):
+def logLikelihood(data, options, alpha, beta, lambda=0, gamma=0.5, varscale=1, **kwargs):
     """
     The core function to evaluate the logLikelihood of the data
     function p=logLikelihood(data,options,alpha,beta,lambda,gamma,varscale)
@@ -38,6 +38,9 @@ def logLikelihood(data,options, alpha, beta, lambda=0, gamma=0.5, varscale=1):
     unnormalized log-posterior
     
     """
+    if kwargs:
+        options = options.copy()
+        options.update(kwargs)
 
     sigmoidHandle = options['sigmoidHandle']
     

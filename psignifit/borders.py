@@ -14,7 +14,7 @@ from .getWeights import getWeights
 from .likelihood import likelihood
 from .marginalize import marginalize
 
-def setBorders(data,options=None,**kwargs):
+def setBorders(data, options=None, **kwargs):
     """ 
     automatically set borders on the parameters based on were you sampled.
     function Borders=setBorders(data,options)
@@ -30,7 +30,7 @@ def setBorders(data,options=None,**kwargs):
     """
     if options is None:
         options = kwargs
-    else:
+    elif kwargs:
         options = options.copy()
         options.update(kwargs)
 
@@ -89,7 +89,7 @@ def setBorders(data,options=None,**kwargs):
     
     return borders 
 
-def moveBorders(data,options=None,**kwargs):
+def moveBorders(data, options=None, **kwargs):
     """
     move parameter-boundaries to save computing power 
     function borders=moveBorders(data, options)
@@ -102,7 +102,7 @@ def moveBorders(data,options=None,**kwargs):
     """
     if options is None:
         options = kwargs
-    else:
+    elif kwargs:
         options = options.copy()
         options.update(kwargs)
         

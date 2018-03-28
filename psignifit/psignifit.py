@@ -26,7 +26,7 @@ from .getSigmoidHandle import getSigmoidHandle
 
 from . import psigniplot as plot
 
-def psignifit(data, optionsIn):
+def psignifit(data, optionsIn=None, **kwargs):
     """
     main function for fitting psychometric functions
     function result=psignifit(data,options)
@@ -56,80 +56,37 @@ def psignifit(data, optionsIn):
         
     # options
         
-    if not('optionsIn' in locals()): 
-        options = dict()
-    else:
-        options = _deepcopy(optionsIn)
-
-    if not('sigmoidName' in options.keys()):
-        options['sigmoidName'] = 'norm'
-    
-    if not('expType' in options.keys()):
-        options['expType'] = 'YesNo'
-
-    if not('estimateType' in options.keys()):
-        options['estimateType'] = 'MAP'
-
-    if not('confP' in options.keys()):
-        options['confP'] = [.95, .9, .68]
+    options = {'sigmoidName': 'norm',
+               'expType': 'YesNo',
+               'estimateType': 'MAP',
+               'confP': [.95, .9, .68],
+               'instantPlot': 0,
+               'setBordersType': 0,
+               'maxBorderValue': .00001,
+               'moveBorders': 1,
+               'dynamicGrid': 0,
+               'widthalpha': .05,
+               'threshPC': .5,
+               'CImethod': 'percentiles',
+               'gridSetType': 'cumDist',
+               'fixedPars': np.ones(5)*np.nan,
+               'nblocks': 25,
+               'useGPU': 0,
+               'poolMaxGap': np.inf,
+               'poolMaxLength': np.inf,
+               'poolxTol': 0,
+               'betaPrior': 10,
+               'verbose': 0,
+               'stimulusRange': 0,
+               'fastOptim': False,
+               }
         
-    if not('instantPlot' in options.keys()):
-        options['instantPlot'] = 0
+    if optionsIn is not None:
+        options.update(optionsIn)
+    options.update(kwargs)
         
-    if not('setBordersType' in options.keys()):
-        options['setBordersType'] = 0
-        
-    if not('maxBorderValue' in options.keys()):
-        options['maxBorderValue'] = .00001
-        
-    if not('moveBorders' in options.keys()):
-        options['moveBorders'] = 1
-        
-    if not('dynamicGrid' in options.keys()):
-        options['dynamicGrid'] = 0
-        
-    if not('widthalpha' in options.keys()):
-        options['widthalpha'] = .05
-        
-    if not('threshPC' in options.keys()):
-        options['threshPC'] = .5
-
-    if not('CImethod' in options.keys()):
-        options['CImethod'] = 'percentiles'
-
-    if not('gridSetType' in options.keys()):
-        options['gridSetType'] = 'cumDist'
-        
-    if not( 'fixedPars' in options.keys()):
-        options['fixedPars'] = np.ones(5)*np.nan
-    elif len(options['fixedPars'].shape)>1:
+    if len(options['fixedPars'].shape)>1:
         options['fixedPars'] = np.squeeze(options['fixedPars'])
-    if not('nblocks' in options.keys()):
-        options['nblocks'] = 25
-    
-    if not('useGPU' in options.keys()):
-        options['useGPU'] = 0
-    
-    if not('poolMaxGap' in options.keys()):
-        options['poolMaxGap'] = np.inf
-    
-    if not('poolMaxLength' in options.keys()):
-        options['poolMaxLength'] = np.inf
-    
-    if not('poolxTol' in options.keys()):
-        options['poolxTol'] = 0
-    
-    if not('betaPrior' in options.keys()):
-        options['betaPrior'] = 10
-    
-    if not('verbose' in options.keys()):
-        options['verbose'] = 0
-        
-    if not('stimulusRange' in options.keys()):
-        options['stimulusRange'] = 0
-        
-    if not('fastOptim' in options.keys()):
-        options['fastOptim'] = False
     
     if options['expType'] in ['2AFC', '3AFC', '4AFC']:            
         options['expN'] = int(float(options['expType'][0]))
@@ -149,7 +106,7 @@ def psignifit(data, optionsIn):
         if not('mbStepN' in options.keys()):
             options['mbStepN'] = [30,40,10,1,20]
     else:
-        raise ValueError('You specified an illegal experiment type')
+        raise ValueError('You specified an illegal experiment type "{0}"'.format(options['expType']))
     
     if np.max(data[:,0]) - np.min(data[:,0]) <= 0:
         raise ValueError('Your data does not have variance on the x-axis! This makes fitting impossible')
@@ -302,7 +259,7 @@ def psignifit(data, optionsIn):
     
     return result
     
-def psignifitFast(data,options):
+def psignifitFast(data, options=None, **kwargs):
     """
     this uses changed settings for the fit to obtain a fast point estimate to
     your data. 
@@ -314,7 +271,12 @@ def psignifitFast(data,options):
     'This is NOT suitable for the final analysis, but meant for online analysis, adaptive methods etc. \n'  \
     'It has not been tested how good the estimates from this method are!')
 
-    options = options.copy()
+    if options is None:
+        options = kwargs
+    elif kwargs:
+        options = options.copy()
+        options.update(kwargs)
+        
     options['stepN']     = [20,20,10,10,1]
     options['mbStepN']  = [20,20,10,10,1]
     options['fixedPars'] = np.array([np.NaN,np.NaN,np.NaN,np.NaN,0.0])
@@ -336,6 +298,11 @@ def psignifitCore(data, options):
     parameters(1) should correspond to the threshold and parameters(2) to
     the width (distance containing 95% of the function.
     """
+    if options is None:
+        options = kwargs
+    elif kwargs:
+        options = options.copy()
+        options.update(kwargs)
     
     d = len(options['borders'])
     result = {'X1D': [], 'marginals': [], 'marginalsX': [], 'marginalsW': []}

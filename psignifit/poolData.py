@@ -13,7 +13,12 @@ Created on Sat Mar  5 17:14:24 2016
 @author: root
 """
 from numpy import tile, array, cumsum, append, empty
-def poolData(data,options):
+def poolData(data, options=None, **kwargs):
+    if options is None:
+        options = kwargs
+    elif kwargs:
+        options = options.copy()
+        options.update(kwargs)
     
     dataDim1 = data.shape[0]
     dataDim2 = data.shape[1]

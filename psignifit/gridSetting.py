@@ -16,7 +16,10 @@ import copy
 
 from .likelihood import likelihood
 
-def gridSetting(data,options,Seed):
+def gridSetting(data,options,Seed,**kwargs):
+    if kwargs:
+        options = options.copy()
+        options.update(kwargs)
     
     # Initialisierung
     d = np.size(options['borders'],0)

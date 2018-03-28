@@ -27,14 +27,19 @@ def prior2(x, Cfactor, wmin, wmax):
 
     return r
     
-def getStandardPriors(data, options):
+def getStandardPriors(data, options=None, **kwargs):
     """sets the standard Priors
     function priors = getStandardPriors(data,options)
     The priors set here are the ones used if the user does supply own priors.
     Thus this functions constitutes a way to change the priors permanently
     note here that the priors here are not normalized. Psignifit takes care
     of the normalization implicitly. """
-
+    
+    if options is None:
+        options = kwargs
+    elif kwargs:
+        options = options.copy()
+        options.update(kwargs)
 
     priors = []    
     
@@ -78,7 +83,7 @@ def getStandardPriors(data, options):
         return getStandardPriors(sys.argv[1], sys.argv[2])
 
 
-def checkPriors(data,options):
+def checkPriors(data, options=None, **kwargs):
     """
     this runs a short test whether the provided priors are functional
      function checkPriors(data,options)
@@ -87,6 +92,12 @@ def checkPriors(data,options):
      values
 
     """
+    
+    if options is None:
+        options = kwargs
+    elif kwargs:
+        options = options.copy()
+        options.update(kwargs)
 
     data = np.array(data)
     if options['logspace'] :
@@ -151,7 +162,7 @@ def normalizeFunction(func, integral):
     l = lambda x: func(x)/integral
     return l
 
-def normalizePriors(options):
+def normalizePriors(options=None, **kwargs):
     """ 
     normalization of given priors
     function Priors=normalizePriors(options)
@@ -164,7 +175,12 @@ def normalizePriors(options):
      normalization
      
     """
-    
+    if options is None:
+        options = kwargs
+    elif kwargs:
+        options = options.copy()
+        options.update(kwargs)
+
     priors = []
 
     for idx in range(0,len(options['priors'])):

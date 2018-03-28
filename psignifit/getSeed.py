@@ -14,7 +14,12 @@ where psi^(-1) is the inverse of the sigmoid function.
 @author: root
 """
 import numpy as np
-def getSeed(data,options):
+def getSeed(data, options=None, **kwargs):
+    if options is None:
+        options = kwargs
+    elif kwargs:
+        options = options.copy()
+        options.update(kwargs)
     
     ''' input parsing '''
     alpha0 = options['widthalpha']

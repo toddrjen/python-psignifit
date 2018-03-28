@@ -7,7 +7,7 @@ Created on Sun Jan 31 21:33:31 2016
 from numpy import log, exp
 from .utils import *
     
-def getSigmoidHandle(options):
+def getSigmoidHandle(options=None, **kwargs):
     '''
     creates a function handle to a specific sigmoid
     function Handle=getSigmoidHandle(options)
@@ -19,8 +19,13 @@ def getSigmoidHandle(options):
     where psi^(-1) is the inverse of the sigmoid function.
     '''
     
-    if 'widthalpha' not in options:
+    if options is None:
+        options = kwargs
+    else:
         options = options.copy()
+        options.update(kwargs)
+        
+    if 'widthalpha' not in options:
         options['widthalpha'] = .05
     
     alpha = options['widthalpha']
