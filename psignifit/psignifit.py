@@ -370,7 +370,7 @@ def psignifitCore(data, options):
                     
     '''Evaluate likelihood and form it into a posterior'''
     
-    (result['Posterior'], result['logPmax']) = _l.likelihood(data, options, result['X1D'])
+    (result['Posterior'], result['logPmax']) = _l.likelihood(data, options, *result['X1D'])
     result['weight'] = getWeights(result['X1D'])
     integral = np.sum(np.array(result['Posterior'][:])*np.array(result['weight'][:]))
     result['Posterior'] = result['Posterior']/integral
@@ -400,21 +400,21 @@ def psignifitCore(data, options):
             Fit[idx] = result['X1D'][idx][index[idx]] 
         
         if options['expType'] == 'YesNo':
-            fun = lambda X, f: -_l.logLikelihood(data, options, [X[0],X[1],X[2],X[3],X[4]])
+            fun = lambda X, f: -_l.logLikelihood(data, options, X[0],X[1],X[2],X[3],X[4])
             x0 = _deepcopy(Fit)
             a = None
             
         elif options['expType'] == 'nAFC':
             #def func(X,f):
-            #    return -_l.logLikelihood(data,options, [X[0], X[1], X[2], f, X[3]])
+            #    return -_l.logLikelihood(data,options, X[0], X[1], X[2], f, X[3])
             #fun = func
-            fun = lambda X, f:  -_l.logLikelihood(data,options, [X[0], X[1], X[2], f, X[3]])
+            fun = lambda X, f:  -_l.logLikelihood(data,options, X[0], X[1], X[2], f, X[3])
             x0 = _deepcopy(Fit[0:3]) # Fit[3]  is excluded
             x0 = np.append(x0,_deepcopy(Fit[4]))
             a = np.array([1/options['expN']])
             
         elif options['expType'] == 'equalAsymptote':
-            fun = lambda X, f: -_l.logLikelihood(data,options,[X[0], X[1], X[2], f, X[3]])
+            fun = lambda X, f: -_l.logLikelihood(data,options,X[0], X[1], X[2], f, X[3])
             x0 = _deepcopy(Fit[0:3])
             x0 = np.append(x0,_deepcopy(Fit[4]))
             a =  np.array([np.nan])
