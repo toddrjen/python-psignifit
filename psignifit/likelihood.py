@@ -44,34 +44,21 @@ def logLikelihood(data,options, args):
     if len(args) < 2:
         raise ValueError('not enough input parameters')
     else:
-        if hasattr(args[0], '__iter__'):
-            alpha = args[0]
-        else:
-            alpha = np.array([args[0]])
-        if hasattr(args[1], '__iter__'):
-            beta = args[1]        
-        else:
-            beta = np.array([args[1]])
+        alpha = np.atleast_1d(args[0])
+        beta = np.atleast_1d(args[1])
             
         if len(args) > 2:
-            if hasattr(args[2], '__iter__'):
-                lamb = args[2]
-            else:
-                lamb = np.array([args[2]])
+            lamb = atleast_1d(args[2])
         else:
             lamb = np.array([0])
+            
         if len(args) > 3:
-            if hasattr(args[3], '__iter__'):
-                gamma = args[3]
-            else:
-                gamma = np.array([args[3]])
+            gamma = atleast_1d(args[3])
         else:
             gamma = np.array([0.5])
+            
         if len(args) > 4:
-            if hasattr(args[4], '__iter__'):
-                varscale = args[4]
-            else:
-                varscale = np.array([args[4]])
+            varscale = atleast_1d(args[4])
         else:
             varscale = np.array([1])
     
