@@ -460,7 +460,7 @@ def psignifitCore(data, options):
     result['data'] = data
     
     '''Compute confidence intervals'''
-    if ~options['fastOptim']:
+    if not options['fastOptim']:
         result['conf_Intervals'] = getConfRegion(result)
         
     return result
@@ -571,10 +571,10 @@ def getSlopePC(result, pCorrect, unscaled = False):
         PC = 0.5
 
     if unscaled:
-        assert ((pCorrect > 0) & (pCorrect < 1)), 'pCorrect must be in ]0,1[ '
+        assert ((pCorrect > 0) and (pCorrect < 1)), 'pCorrect must be in ]0,1[ '
         pCorrectUnscaled = pCorrect
     else:
-        assert ((pCorrect > theta0[3]) & (pCorrect < (1-theta0[2]))), 'pCorrect must lay btw {:.2f} and {:.2f}'.format(theta0[3], (1-theta0[2]))
+        assert ((pCorrect > theta0[3]) and (pCorrect < (1-theta0[2]))), 'pCorrect must lay btw {:.2f} and {:.2f}'.format(theta0[3], (1-theta0[2]))
         pCorrectUnscaled = (pCorrect-theta0[3])/(1-theta0[2] - theta0[3])
         
 
@@ -678,7 +678,7 @@ def getThreshold(result,pCorrect, unscaled=False):
         CIs[2:4,:] = 0
         
     
-    assert ((np.array(pCorrect)>theta0[3]) & (np.array(pCorrect)<(1-theta0[2]))), 'The threshold percent correct is not reached by the sigmoid!'
+    assert ((np.array(pCorrect)>theta0[3]) and (np.array(pCorrect)<(1-theta0[2]))), 'The threshold percent correct is not reached by the sigmoid!'
         
     pCorrectUnscaled = (pCorrect-theta0[3])/(1-theta0[2]-theta0[3])
     alpha = result['options']['widthalpha']
@@ -761,10 +761,10 @@ def getThreshold(result,pCorrect, unscaled=False):
         else:
              raise ValueError('unknown sigmoid function')
         
-        if (pCorrMin>1) | (pCorrMin<0):
+        if (pCorrMin>1) or (pCorrMin<0):
             CI[iConfP,0] = np.nan
         
-        if (pCorrMax>1) | (pCorrMax<0):
+        if (pCorrMax>1) or (pCorrMax<0):
             CI[iConfP,1] = np.nan
             
     return (threshold,CI)
