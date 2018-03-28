@@ -192,7 +192,7 @@ def psignifit(data, optionsIn):
             options['widthmin'] = 100*np.spacing(options['stimulusRange'][1])
 
     # add priors
-    if options['threshPC'] != .5 and not(hasattr(options, 'priors')):
+    if options['threshPC'] != .5 and not('priors' in options):
         warnings.warn('psignifit:TresholdPCchanged\n'\
             'You changed the percent correct corresponding to the threshold\n')    
     
