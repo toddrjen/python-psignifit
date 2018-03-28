@@ -88,7 +88,7 @@ def checkPriors(data,options):
 
     """
 
-
+    data = np.array(data)
     if options['logspace'] :
         data[:,0] = np.log(data[:,0])
     

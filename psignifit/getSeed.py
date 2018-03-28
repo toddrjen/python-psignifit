@@ -18,6 +18,7 @@ def getSeed(data,options):
     
     ''' input parsing '''
     alpha0 = options['widthalpha']
+    data = np.array(data)
     if options['logspace']:
         data[:,0] = np.log(data[:,0])
     

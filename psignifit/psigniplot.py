@@ -7,6 +7,8 @@ Created on Mon Mar 14 17:34:08 2016
 @author: Ole
 """
 
+from copy import deepcopy as _deepcopy
+
 import numpy as np
 from scipy.signal import convolve as _convn
 import matplotlib.pyplot as plt
@@ -347,6 +349,7 @@ def plotPrior(result,
     data = result['data']
 
     if np.size(result['options']['stimulusRange']) <= 1:
+        result = _deepcopy(result)
         result['options']['stimulusRange'] = np.array([min(data[:,0]), max(data[:,0])])
         stimRangeSet = False
     else:

@@ -43,9 +43,9 @@ def logLikelihood(data,options, alpha, beta, lambda=0, gamma=0.5, varscale=1):
     
     alpha = np.atleast_1d(args[0])
     beta = np.atleast_1d(args[1])
-    lamb = np.atleast_1d(args[2])
-    gamma = np.atleast_1d(args[3])
-    varscale = np.atleast_1d(args[4])
+    lamb = np.atleast_1d(args[2]).copy()
+    gamma = np.atleast_1d(args[3]).copy()
+    varscale = np.atleast_1d(args[4]).copy()
     
     # is the input only one point?
     oneParameter = not(len(alpha) > 1 or len(beta) > 1 or len(lamb) > 1 

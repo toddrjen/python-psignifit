@@ -314,6 +314,7 @@ def psignifitFast(data,options):
     'This is NOT suitable for the final analysis, but meant for online analysis, adaptive methods etc. \n'  \
     'It has not been tested how good the estimates from this method are!')
 
+    options = options.copy()
     options['stepN']     = [20,20,10,10,1]
     options['mbStepN']  = [20,20,10,10,1]
     options['fixedPars'] = np.array([np.NaN,np.NaN,np.NaN,np.NaN,0.0])

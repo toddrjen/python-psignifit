@@ -20,6 +20,7 @@ def getSigmoidHandle(options):
     '''
     
     if 'widthalpha' not in options:
+        options = options.copy()
         options['widthalpha'] = .05
     
     alpha = options['widthalpha']
