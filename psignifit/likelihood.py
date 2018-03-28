@@ -208,14 +208,14 @@ def logLikelihood(data,options, args):
     if (options['priors']):
         
         if isinstance(options['priors'], list):
-            if hasattr(options['priors'][0], '__call__'):
+            if callable(options['priors'][0]):
                 temp = options['priors'][0](alpha)
                 if len(np.ravel(temp)) > 1: temp[temp < 1E-200] = 1E-200
                 prior = np.log(temp)
                 if not(oneParameter):
                     prior = np.tile(prior, (1,) + p.shape[1:])
                 p += prior
-            if hasattr(options['priors'][1], '__call__'):
+            if callable(options['priors'][1]):
                 temp = options['priors'][1](beta)
                 if len(np.ravel(temp)) > 1: temp[temp < 1E-200] = 1E-200         
                 
@@ -223,7 +223,7 @@ def logLikelihood(data,options, args):
                 if not(oneParameter):
                     prior = np.tile(prior, (p.shape[0],1) +p.shape[2:])
                 p += prior
-            if hasattr(options['priors'][2], '__call__'):
+            if callable(options['priors'][2]):
                 temp = options['priors'][2](lamb)
                 if len(np.ravel(temp)) > 1: temp[temp < 1E-200] = 1E-200             
                 
@@ -231,7 +231,7 @@ def logLikelihood(data,options, args):
                 if not(oneParameter):
                     prior = np.tile(prior,p.shape[0:2] + (1,) + p.shape[3:])
                 p += prior
-            if hasattr(options['priors'][3], '__call__'):
+            if callable(options['priors'][3]):
                 temp = options['priors'][3](gamma)
                 if len(np.ravel(temp)) > 1: temp[temp < 1E-200] = 1E-200   
                 prior = np.log(temp) 
@@ -241,7 +241,7 @@ def logLikelihood(data,options, args):
                     else:
                         prior = np.tile(prior, p.shape[0:3] +(1,p.shape[4])) 
                 p += prior
-            if hasattr(options['priors'][4], '__call__'):
+            if callable(options['priors'][4]):
                 temp = options['priors'][4](varscaleOrig)
                 if len(np.ravel(temp)) > 1: temp[temp < 1E-200] = 1E-200                
                 

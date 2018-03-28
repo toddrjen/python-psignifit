@@ -74,7 +74,7 @@ def getSigmoidHandle(options):
             handle = lambda X, m, width: 1 - my_t1cdf(C*(X-m)/ width + my_t1icdf(PC))       
         else:
             raise ValueError('unknown sigmoid function')
-    elif hasattr(sigmoid, '__call__'):
+    elif callable(sigmoid):
         handle = sigmoid
         
     return handle

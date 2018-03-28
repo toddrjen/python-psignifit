@@ -203,7 +203,7 @@ def psignifit(data, optionsIn):
         priors = _p.getStandardPriors(data, options)
         
         for ipar in range(5):
-            if not(hasattr(options['priors'][ipar], '__call__')):
+            if not callable(options['priors'][ipar]):
                 options['priors'][ipar] = priors[ipar]
                 
         _p.checkPriors(data, options)
