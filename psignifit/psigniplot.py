@@ -271,6 +271,7 @@ def plotMarginal(result,
         elif dim == 2: xLabel = r'$\lambda$'
         elif dim == 3: xLabel = r'$\gamma$'
         elif dim == 4: xLabel = r'$\eta$'
+        else: raise ValueError('Unknown dimension "{0}"'.format(dim))
     
     x        = result['marginalsX'][dim]
     marginal = result['marginals'][dim]

@@ -108,4 +108,5 @@ def strToDim(string):
     elif s in ['gamma','guess','guessrate','guess rate',
                'guess-rate','lower asymptote','g', '3']:    return 3, r'$\gamma$'
     elif s in ['sigma','std','s','eta','e', '4']:           return 4, r'$\eta$'
+    else: raise ValueError('Unknown parameter "{0}"'.format(s))
     

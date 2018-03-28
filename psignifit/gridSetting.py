@@ -130,6 +130,8 @@ def gridSetting(data,options,Seed):
             maximum = np.sqrt(options['borders'][4,1])
             minimum = np.sqrt(options['borders'][4,0])
             X1D.append((np.linspace(minimum, maximum, options['stepN'][4]))**4) 
+    else:
+        raise ValueError('unknown gridSetType "{0}"'.format(options['gridSetType']))
         
         
     return X1D

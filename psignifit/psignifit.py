@@ -420,9 +420,8 @@ def psignifitCore(data, options):
             x0 = _deepcopy(Fit[0:3])
             x0 = np.append(x0,_deepcopy(Fit[4]))
             a =  np.array([np.nan])
-           
         else:
-            raise ValueError('unknown expType')
+            raise ValueError('unknown expType "{0}"'.format(options['expType']))
             
         if options['fastOptim']:           
             Fit = scipy.optimize.fmin(fun, x0, args = (a,), xtol=0, ftol = 0, maxiter = 100, maxfun=100)
@@ -443,7 +442,7 @@ def psignifitCore(data, options):
             fit = np.append(fit, Fit[3])
             result['Fit'] = fit
         else:
-            raise ValueError('unknown expType')
+            raise ValueError('unknown expType "{0}"'.format(options['expType']))
         
         par_idx = np.where(np.isnan(options['fixedPars']) == False)
         for idx in par_idx[0]:
@@ -457,6 +456,8 @@ def psignifitCore(data, options):
         
         result['Fit'] = _deepcopy(Fit)
         Fit = np.empty(Fit.shape)
+    else:
+        raise ValueError('unknown estimateType "{0}"'.format(options['estimateType']))
     '''Include input into result'''
     result['options'] = options # no copies here, because they are not changing
     result['data'] = data
@@ -535,7 +536,7 @@ def getSlope(result, stimLevel):
         stimLevel = (stimLevel-theta0[0])/theta0[1]*C+my_t1icdf(PC)
         slope = C/theta0[1]*t.pdf(stimLevel,df=1)
     else:
-        raise ValueError('unknown sigmoid function')
+        raise ValueError('unknown sigmoid function "{0}"'.format(sigName))
 
 
     slope   = (1-theta0[2]-theta0[3])*slope
@@ -628,7 +629,7 @@ def getSlopePC(result, pCorrect, unscaled = False):
         stimLevel = _my_t1icdf(pCorrectUnscaled)
         slope = C/theta0[1]*t.pdf(stimLevel,df=1)
     else:
-        raise ValueError('unknown sigmoid function')
+        raise ValueError('unknown sigmoid function "{0}"'.format(sigName))
 
 
     slope   = (1-theta0[2]-theta0[3])*slope
@@ -717,7 +718,7 @@ def getThreshold(result,pCorrect, unscaled=False):
         C      = (_my_t1icdf(1-alpha) - _my_t1icdf(alpha))
         threshold = (_my_t1icdf(pCorrectUnscaled)-_my_t1icdf(PC))*theta0[1] / C + theta0[0]
     else:
-        raise ValueError('unknown sigmoid function')
+        raise ValueError('unknown sigmoid function "{0}"'.format(sigName))
 
     """ calculate CI -> worst case in parameter confidence intervals """
     
@@ -763,7 +764,7 @@ def getThreshold(result,pCorrect, unscaled=False):
             CI[iConfP,0] = (_my_t1icdf(pCorrMin)-_my_t1icdf(PC))*thetaMin[1] / C + thetaMin[0]
             CI[iConfP,1] = (_my_t1icdf(pCorrMax)-_my_t1icdf(PC))*thetaMax[1] / C + thetaMax[0]
         else:
-             raise ValueError('unknown sigmoid function')
+             raise ValueError('unknown sigmoid function "{0}"'.format(sigName))
         
         if (pCorrMin>1) or (pCorrMin<0):
             CI[iConfP,0] = np.nan

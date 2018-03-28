@@ -14,7 +14,7 @@ from .getWeights import getWeights
 from .likelihood import likelihood
 from .marginalize import marginalize
 
-def setBorders(data,options):
+def setBorders(data,options=None,**kwargs):
     """ 
     automatically set borders on the parameters based on were you sampled.
     function Borders=setBorders(data,options)
@@ -28,6 +28,11 @@ def setBorders(data,options):
               -the lower asymptote to 0 to .5 or fix to 1/n for nAFC
               -the varscale to the full range from almost 0 to almost 1
     """
+    if options is None:
+        options = kwargs
+    else:
+        options = options.copy()
+        options.update(kwargs)
 
     widthmin = options['widthmin']
     # lapse fix to 0 - .5    
@@ -39,6 +44,8 @@ def setBorders(data,options):
         gammaB = np.array([0, .5])
     elif options['expType'] == 'equalAsymptote':
         gammaB = np.array([np.nan, np.nan])
+    else:
+        raise ValueError('unknown expType "{0}"'.format(options['expType']))
     
     # varscale from 0 to 1, 1 excluded!
     varscaleB = np.array([0, 1-np.exp(-20)])  
@@ -82,7 +89,7 @@ def setBorders(data,options):
     
     return borders 
 
-def moveBorders(data,options):
+def moveBorders(data,options=None,**kwargs):
     """
     move parameter-boundaries to save computing power 
     function borders=moveBorders(data, options)
@@ -93,6 +100,12 @@ def moveBorders(data,options):
     this is meant to save computing power by not evaluating the likelihood in
     areas where it is practically 0 everywhere.
     """
+    if options is None:
+        options = kwargs
+    else:
+        options = options.copy()
+        options.update(kwargs)
+        
     borders = []
     
     tol = options['maxBorderValue']
@@ -115,7 +128,7 @@ def moveBorders(data,options):
     MBresult['weight'] = getWeights(MBresult['X1D'])
     #kwargs = {'alpha': None, 'beta':None , 'lambda': None,'gamma':None , 'varscale':None }
     #fill_kwargs(kwargs,MBresult['X1D'])
-    MBresult['Posterior'] = likelihood(data, options, MBresult['X1D'])[0] 
+    MBresult['Posterior'] = likelihood(data, options, *MBresult['X1D'])[0] 
     integral = sum(np.reshape(MBresult['Posterior'], -1) * np.reshape(MBresult['weight'], -1))
     MBresult['Posterior'] /= integral
 

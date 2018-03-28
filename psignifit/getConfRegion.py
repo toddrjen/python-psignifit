@@ -117,7 +117,7 @@ def getConfRegion(result):
                 conf_Intervals[idx,:,i] = np.array([start, stop])
                        
         else:
-            raise ValueError('You specified an invalid mode')
+            raise ValueError('You specified an invalid mode "{0}"'.format(mode))
                 
         i += 1
     return conf_Intervals
