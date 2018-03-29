@@ -27,11 +27,11 @@ def marginalize(result, dimension):
             raise ValueError('the dimensions you want to marginalize to should be given as a vector of numbers 0 to 4')
         d = len(result['X1D'])
 
-    if d == 1 and ('marginals' in result.keys()) and len(result['marginals'])-1 >= dimension:
+    if d == 1 and 'marginals' in result and len(result['marginals'])-1 >= dimension:
         marginal = result['marginals'][dimension]
         weight = result['marginalsW'][dimension]
         x = result['marginalsX'][dimension]
-    elif not('Posterior' in result.keys()):
+    elif 'Posterior' not in result:
         raise ValueError('marginals cannot be computed anymore because posterior was dropped')
     elif np.shape(result['Posterior']) != np.shape(result['weight']):
         raise ValueError('dimensions mismatch in marginalization')

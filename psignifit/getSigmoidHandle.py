@@ -38,7 +38,7 @@ def getSigmoidHandle(options=None, **kwargs):
 
     if isinstance(sigmoid,str):
         sig = sigmoid.lower()
-        if sig in ['gauss', 'norm']:   # cumulative normal distribution
+        if sig in {'gauss', 'norm'}:   # cumulative normal distribution
             C = my_norminv(1-alpha, 0,1) - my_norminv(alpha,0,1)
             handle = lambda X,m,width: my_normcdf(X, (m-my_norminv(PC,0,width/C)), width/C)
         elif sig == 'logistic':         # logistic function
@@ -55,10 +55,10 @@ def getSigmoidHandle(options=None, **kwargs):
         elif sig == 'weibull':
             C = log(-log(alpha)) - log(-log(1-alpha))
             handle = lambda X, m, width: 1 - exp(-exp(C/ width * (log(X)-m) + log(-log(1-PC))))
-        elif sig in ['tdist', 'student', 'heavytail']:
+        elif sig in {'tdist', 'student', 'heavytail'}:
             C = (my_t1icdf(1-alpha) - my_t1icdf(alpha))
             handle = lambda X, m, width: my_t1cdf(C*(X-m)/ width + my_t1icdf(PC))
-        elif sig in ['neg_gauss', 'neg_norm']:   # cumulative normal distribution
+        elif sig in {'neg_gauss', 'neg_norm'}:   # cumulative normal distribution
             C = my_norminv(1-alpha, 0,1) - my_norminv(alpha,0,1)
             handle = lambda X,m,width: 1 - my_normcdf(X, (m-my_norminv(PC,0,width/C)), width/C)
         elif sig == 'neg_logistic':         # logistic function
@@ -75,7 +75,7 @@ def getSigmoidHandle(options=None, **kwargs):
         elif sig == 'neg_weibull':
             C = log(-log(alpha)) - log(-log(1-alpha))
             handle = lambda X, m, width: exp(-exp(C/ width * (log(X)-m) + log(-log(1-PC))))
-        elif sig in ['neg_tdist', 'neg_student', 'neg_heavytail']:
+        elif sig in {'neg_tdist', 'neg_student', 'neg_heavytail'}:
             C = (my_t1icdf(1-alpha) - my_t1icdf(alpha))
             handle = lambda X, m, width: 1 - my_t1cdf(C*(X-m)/ width + my_t1icdf(PC))       
         else:

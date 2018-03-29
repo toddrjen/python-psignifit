@@ -101,12 +101,12 @@ def strToDim(string):
     Finds the number corresponding to a dim/parameter given as a string. 
     """
     s = string.lower()
-    if s in ['threshold','thresh','m','t','alpha', '0']:    return 0,'Threshold'
-    elif s in  ['width','w','beta', '1']:                   return 1,'Width'
-    elif s in ['lapse','lambda','lapserate','lapse rate','lapse-rate',
-               'upper asymptote','l', '2']:                 return 2, r'$\lambda$'
-    elif s in ['gamma','guess','guessrate','guess rate',
-               'guess-rate','lower asymptote','g', '3']:    return 3, r'$\gamma$'
-    elif s in ['sigma','std','s','eta','e', '4']:           return 4, r'$\eta$'
+    if s in {'threshold','thresh','m','t','alpha', '0'}:    return 0,'Threshold'
+    elif s in  {'width','w','beta', '1'}:                   return 1,'Width'
+    elif s in {'lapse','lambda','lapserate','lapse rate','lapse-rate',
+               'upper asymptote','l', '2'}:                 return 2, r'$\lambda$'
+    elif s in {'gamma','guess','guessrate','guess rate',
+               'guess-rate','lower asymptote','g', '3'}:    return 3, r'$\gamma$'
+    elif s in {'sigma','std','s','eta','e', '4'}:           return 4, r'$\eta$'
     else: raise ValueError('Unknown parameter "{0}"'.format(s))
     

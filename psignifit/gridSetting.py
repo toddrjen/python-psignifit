@@ -65,7 +65,7 @@ def gridSetting(data,options,Seed,**kwargs):
                 X1D.append(copy.deepcopy(options['borders'][idx,0]))
         
         ''' equal steps in cumulative  second derivative'''
-    elif (options['gridSetType'] in ['2', '2ndDerivative']):
+    elif options['gridSetType'] in {'2', '2ndDerivative'}:
         Like1D = np.zeros([options['GridSetEval'], 1])
         
         for idx in range(d):
@@ -112,7 +112,7 @@ def gridSetting(data,options,Seed,**kwargs):
     
         ''' different choices for the varscale '''
         ''' We use STD now directly as parametrisation'''
-    elif options['gridSetType'] in ['priorlike', 'STD', 'exp', '4power']:
+    elif options['gridSetType'] in {'priorlike', 'STD', 'exp', '4power'}:
         for i in range(4):
             if options['borders'](i,0) < options['borders'](i,1):
                 X1D.append(np.linspace(options['borders'][i,0], options['borders'][i,1], options['stepN'][i]))
